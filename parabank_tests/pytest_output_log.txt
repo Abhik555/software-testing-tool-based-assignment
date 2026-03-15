@@ -1,0 +1,137 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\Abthedev\OneDrive - BENNETT UNIVERSITY\BU 6th Semester\Software Testing Tool based assignment\V2\parabank_tests\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+metadata: {'Python': '3.13.7', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.0.2', 'pluggy': '1.6.0'}, 'Plugins': {'html': '4.2.0', 'metadata': '3.1.1'}, 'JAVA_HOME': 'C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.9.10-hotspot\\'}
+rootdir: C:\Users\Abthedev\OneDrive - BENNETT UNIVERSITY\BU 6th Semester\Software Testing Tool based assignment\V2\parabank_tests
+configfile: pytest.ini
+testpaths: tests
+plugins: html-4.2.0, metadata-3.1.1
+collecting ... collected 9 items
+
+tests/test_billpay.py::TestBillPay::test_bill_pay_zero_amount XPASS      [ 11%]
+tests/test_loan.py::TestLoan::test_loan_approval_bva[1000-99-Denied] FAILED [ 22%]
+tests/test_loan.py::TestLoan::test_loan_approval_bva[1000-100-Approved] PASSED [ 33%]
+tests/test_login.py::TestLogin::test_valid_login PASSED                  [ 44%]
+tests/test_login.py::TestLogin::test_invalid_password PASSED             [ 55%]
+tests/test_registration.py::TestRegistration::test_blank_first_name PASSED [ 66%]
+tests/test_registration.py::TestRegistration::test_valid_registration PASSED [ 77%]
+tests/test_transfer.py::TestTransfer::test_negative_transfer_amount PASSED [ 88%]
+tests/test_transfer.py::TestTransfer::test_transfer_same_account XPASS   [100%]
+
+================================== FAILURES ===================================
+_______________ TestLoan.test_loan_approval_bva[1000-99-Denied] _______________
+
+self = <test_loan.TestLoan object at 0x000002A24F702210>
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="8071ded6221a0448b26c3298d06f4855")>
+loan_amt = '1000', down_pmt = '99', expected_status = 'Denied'
+
+    @pytest.mark.bva
+    @pytest.mark.parametrize("loan_amt, down_pmt, expected_status", [
+        ("1000", "99", "Denied"),   # TC_01
+        ("1000", "100", "Approved") # TC_02
+    ])
+    def test_loan_approval_bva(self, driver, loan_amt, down_pmt, expected_status):
+        """
+        Maps to TC_01 and TC_02. Parameterized BVA for loan decision table.
+        """
+        loan_page = LoanPage(driver)
+        loan_page.open()
+>       loan_page.apply_for_loan(loan_amt, down_pmt)
+
+tests\test_loan.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+pages\loan_page.py:20: in apply_for_loan
+    self.enter_text(self.LOAN_AMOUNT_INPUT, str(amount))
+pages\base_page.py:17: in enter_text
+    element = self.find_element(locator)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+pages\base_page.py:10: in find_element
+    return self.wait.until(EC.presence_of_element_located(locator))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <selenium.webdriver.support.wait.WebDriverWait (session="8071ded6221a0448b26c3298d06f4855")>
+method = <function presence_of_element_located.<locals>._predicate at 0x000002A24F7951C0>
+message = ''
+
+    def until(self, method: Callable[[D], Literal[False] | T], message: str = "") -> T:
+        """Wait until the method returns a value that is not False.
+    
+        Calls the method provided with the driver as an argument until the
+        return value does not evaluate to ``False``.
+    
+        Args:
+            method: A callable object that takes a WebDriver instance as an
+                argument.
+            message: Optional message for TimeoutException.
+    
+        Returns:
+            The result of the last call to `method`.
+    
+        Raises:
+            TimeoutException: If 'method' does not return a truthy value within
+                the WebDriverWait object's timeout.
+    
+        Example:
+            >>> from selenium.webdriver.common.by import By
+            >>> from selenium.webdriver.support.ui import WebDriverWait
+            >>> from selenium.webdriver.support import expected_conditions as EC
+            >>>
+            >>> # Wait until an element is visible on the page
+            >>> wait = WebDriverWait(driver, 10)
+            >>> element = wait.until(EC.visibility_of_element_located((By.ID, "exampleId")))
+            >>> print(element.text)
+        """
+        screen = None
+        stacktrace = None
+    
+        end_time = time.monotonic() + self._timeout
+        while True:
+            try:
+                value = method(self._driver)
+                if value:
+                    return value
+            except self._ignored_exceptions as exc:
+                screen = getattr(exc, "screen", None)
+                stacktrace = getattr(exc, "stacktrace", None)
+            if time.monotonic() > end_time:
+                break
+            time.sleep(self._poll)
+>       raise TimeoutException(message, screen, stacktrace)
+E       selenium.common.exceptions.TimeoutException: Message: 
+E       Stacktrace:
+E       Symbols not available. Dumping unresolved backtrace:
+E       	0x897dd3
+E       	0x897e14
+E       	0x6a1db0
+E       	0x6ec20a
+E       	0x6ec4ab
+E       	0x72de32
+E       	0x70ea84
+E       	0x72b621
+E       	0x70e7d6
+E       	0x6e0049
+E       	0x6e0e04
+E       	0xaf6924
+E       	0xaf1bf7
+E       	0xb0f5a0
+E       	0x8b0f58
+E       	0x8b891d
+E       	0x8a0648
+E       	0x8a0812
+E       	0x88a21a
+E       	0x75c65d49
+E       	0x77d7d81b
+E       	0x77d7d7a1
+
+.venv\Lib\site-packages\selenium\webdriver\support\wait.py:121: TimeoutException
+-------------------------- Captured stdout teardown ---------------------------
+Failed to capture screenshot: HTTPConnectionPool(host='localhost', port=55964): Max retries exceeded with url: /session/8071ded6221a0448b26c3298d06f4855/screenshot (Caused by NewConnectionError("HTTPConnection(host='localhost', port=55964): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))
+---------------------------- Captured log teardown ----------------------------
+WARNING  urllib3.connectionpool:connectionpool.py:868 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55964): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")': /session/8071ded6221a0448b26c3298d06f4855/screenshot
+WARNING  urllib3.connectionpool:connectionpool.py:868 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55964): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")': /session/8071ded6221a0448b26c3298d06f4855/screenshot
+WARNING  urllib3.connectionpool:connectionpool.py:868 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPConnection(host='localhost', port=55964): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")': /session/8071ded6221a0448b26c3298d06f4855/screenshot
+- Generated html report: file:///C:/Users/Abthedev/OneDrive%20-%20BENNETT%20UNIVERSITY/BU%206th%20Semester/Software%20Testing%20Tool%20based%20assignment/V2/parabank_tests/report.html -
+=========================== short test summary info ===========================
+FAILED tests/test_loan.py::TestLoan::test_loan_approval_bva[1000-99-Denied]
+============= 1 failed, 6 passed, 2 xpassed in 102.26s (0:01:42) ==============
