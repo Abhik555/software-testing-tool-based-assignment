@@ -6,7 +6,7 @@ class DriverFactory:
     @staticmethod
     def get_driver():
         options = webdriver.ChromeOptions()
-        # options.add_argument('--headless') # Uncomment for headless execution
+        options.add_argument('--headless') # Uncomment for headless execution
         options.add_argument('--window-size=1920,1080')
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
         return driver

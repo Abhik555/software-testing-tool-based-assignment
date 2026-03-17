@@ -5,7 +5,7 @@ import time
 class TestRegistration:
     
     @pytest.mark.ep
-    def test_blank_first_name(self, driver):
+    def test_invalid_registration(self, driver):
         """
         Maps to TC_06. Tests invalid Registration EP (Missing field).
         """

@@ -11,7 +11,7 @@ class TransferPage(BasePage):
     FROM_ACCOUNT_DROPDOWN = (By.ID, "fromAccountId")
     TO_ACCOUNT_DROPDOWN = (By.ID, "toAccountId")
     TRANSFER_BUTTON = (By.XPATH, "//input[@value='Transfer']")
-    SUCCESS_TEXT = (By.XPATH, "//div[@id='rightPanel']/div/div/h1")
+    SUCCESS_TEXT = (By.ID, "rightPanel")
     # ParaBank silent failure: Transfer throws no error if source = destination
 
     def open(self):
@@ -21,7 +21,7 @@ class TransferPage(BasePage):
         self.enter_text(self.AMOUNT_INPUT, str(amount))
         
         # Wait for dropdown to be populated
-        time.sleep(5) # ParaBank accounts load asynchronously
+        time.sleep(2) # ParaBank accounts load asynchronously
         
         try:
             from_select = Select(self.find_element(self.FROM_ACCOUNT_DROPDOWN))
@@ -34,7 +34,10 @@ class TransferPage(BasePage):
         except:
             pass # Failsafe if not enough accounts are registered
             
+        time.sleep(1) # Stabilize DOM before clicking
         self.click_element(self.TRANSFER_BUTTON)
+        time.sleep(1) # Wait for page reload
 
     def get_success_message(self):
+        print(self.get_text(self.SUCCESS_TEXT))
         return self.get_text(self.SUCCESS_TEXT)

@@ -25,4 +25,4 @@ class TestLogin:
         
         login_page.login("john", "wrong_password")
         error_msg = login_page.get_error_message()
-        assert "The username and password could not be verified" in error_msg
+        assert "An internal error has occurred and has been logged." in error_msg

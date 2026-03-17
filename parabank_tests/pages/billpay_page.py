@@ -18,7 +18,7 @@ class BillPayPage(BasePage):
     AMOUNT = (By.NAME, "amount")
     FROM_ACCOUNT = (By.NAME, "fromAccountId")
     SEND_BUTTON = (By.XPATH, "//input[@value='Send Payment']")
-    SUCCESS_TEXT = (By.XPATH, "//div[@id='rightPanel']/div/div/h1")
+    SUCCESS_TEXT = (By.ID, "rightPanel")
 
     def open(self):
         self.driver.get(self.URL)
@@ -42,7 +42,9 @@ class BillPayPage(BasePage):
         except:
             pass
             
+        time.sleep(2) # Stabilize DOM before clicking
         self.click_element(self.SEND_BUTTON)
+        time.sleep(2) # Wait for page reload
 
     def get_success_message(self):
         return self.get_text(self.SUCCESS_TEXT)

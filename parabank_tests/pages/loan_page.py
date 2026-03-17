@@ -1,3 +1,4 @@
+import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 import time
@@ -20,7 +21,7 @@ class LoanPage(BasePage):
         self.enter_text(self.LOAN_AMOUNT_INPUT, str(amount))
         self.enter_text(self.DOWN_PAYMENT_INPUT, str(down_payment))
         
-        time.sleep(1) # Dropdown population wait
+        time.sleep(2) # Dropdown population wait
         
         try:
             from_select = Select(self.find_element(self.FROM_ACCOUNT_DROPDOWN))
@@ -28,9 +29,14 @@ class LoanPage(BasePage):
                 from_select.select_by_index(0)
         except:
             pass
+
+        time.sleep(2)
             
         self.click_element(self.APPLY_BUTTON)
 
+        time.sleep(2)
+
     def get_loan_status(self):
         # Returns: Approved or Denied
+        logging.log(logging.INFO , self.get_text(self.STATUS_TEXT))
         return self.get_text(self.STATUS_TEXT)
