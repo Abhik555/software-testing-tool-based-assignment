@@ -24,7 +24,7 @@ class TestBillPay:
         
         success = billpay_page.get_success_message()
         
-        assert "Complete" in success, "Bill Pay processed with 0 amount!"
+        assert "Complete" not in success, "Bill Pay processed with 0 amount!"
     
     @pytest.mark.bva
     def test_bill_pay_normal(self , driver):

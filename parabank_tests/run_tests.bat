@@ -33,6 +33,5 @@ call uv run pytest
 echo.
 echo =======================================================
 echo Test execution complete! 
-echo Check 'report.html' for detailed results and 'screenshots/' for failure captures.
 echo =======================================================
 pause
